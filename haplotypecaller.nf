@@ -113,7 +113,7 @@ process haplotypecaller_1_2 {
 
     input:
     set sample_id, file(bam), file(bai) from bwa_out_1_0
-    // each interval from interval_1_2
+    each interval from interval_1_2
     each file(ref_files) from haplotypecallerRef_1_2
     each index from haplotypecallerIndexId_1_2
    
@@ -130,7 +130,9 @@ file ".versions"
       --java-options -Xmx${task.memory.toMega()}M \
       -R ${index}.fasta \
       -O ${sample_id}.g.vcf \
-      -I $bam
+      -I $bam \
+      -ERC GVCF \
+      -L $interval
     """
 }
 
