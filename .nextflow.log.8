@@ -1,0 +1,88 @@
+Jun-11 12:48:43.804 [main] DEBUG nextflow.cli.Launcher - $> nextflow run haplotypecaller.nf -profile docker -resume
+Jun-11 12:48:43.976 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 19.01.0
+Jun-11 12:48:43.996 [main] INFO  nextflow.cli.CmdRun - Launching `haplotypecaller.nf` [pedantic_einstein] - revision: 0ec00b622c
+Jun-11 12:48:44.015 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /Users/phil/Documents/GitHub/flowcraft-testing/nextflow.config
+Jun-11 12:48:44.016 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /Users/phil/Documents/GitHub/flowcraft-testing/nextflow.config
+Jun-11 12:48:44.131 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `docker`
+Jun-11 12:48:45.008 [main] DEBUG nextflow.config.ConfigBuilder - Available config profiles: [standard, condor_docker, pbs_docker, pbs_shifter, lsf_sing, lsf_shifter, oneida, nqsii_sing, condor_shifter, slurm_sing, sge_sing, slurmOneida, docker, slurm, slurm_shifter, lsf_docker, nqsii_shifter, sge_docker, sge_shifter, incd, pbs_sing, slurm_docker, condor_sing, nqsii_docker]
+Jun-11 12:48:45.053 [main] DEBUG nextflow.Session - Session uuid: 734636e7-be6d-4041-9841-333e20a251aa
+Jun-11 12:48:45.056 [main] DEBUG nextflow.Session - Run name: pedantic_einstein
+Jun-11 12:48:45.057 [main] DEBUG nextflow.Session - Executor pool size: 4
+Jun-11 12:48:50.120 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 19.01.0 build 5050
+  Modified: 22-01-2019 11:19 UTC (11:19 BST)
+  System: Mac OS X 10.14.2
+  Runtime: Groovy 2.5.5 on Java HotSpot(TM) 64-Bit Server VM 10.0.2+13
+  Encoding: UTF-8 (UTF-8)
+  Process: 47681@MacBook-Pro-2.local [10.244.68.28]
+  CPUs: 4 - Mem: 8 GB (39.1 MB) - Swap: 7 GB (1.2 GB)
+Jun-11 12:48:50.153 [main] DEBUG nextflow.Session - Work-dir: /Users/phil/Documents/GitHub/flowcraft-testing/work [Mac OS X]
+Jun-11 12:48:50.350 [main] DEBUG nextflow.Session - Session start invoked
+Jun-11 12:48:50.354 [main] DEBUG nextflow.processor.TaskDispatcher - Dispatcher > start
+Jun-11 12:48:50.355 [main] DEBUG nextflow.trace.TraceFileObserver - Flow starting -- trace file: /Users/phil/Documents/GitHub/flowcraft-testing/pipeline_stats.txt
+Jun-11 12:48:50.371 [main] DEBUG nextflow.script.ScriptRunner - > Script parsing
+Jun-11 12:48:50.371 [main] DEBUG nextflow.Session - Using default localLib path: /Users/phil/Documents/GitHub/flowcraft-testing/lib
+Jun-11 12:48:50.378 [main] DEBUG nextflow.script.ScriptRunner - Adding to the classpath library: /Users/phil/Documents/GitHub/flowcraft-testing/lib
+Jun-11 12:48:50.773 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Jun-11 12:48:50.848 [PathVisitor-1] DEBUG nextflow.file.PathVisitor - files for syntax: glob; folder: testdata/; pattern: H06HDADXX130110.1.ATCACGAT.20k_reads_{1,2}.fastq.gz; options: [:]
+Jun-11 12:48:50.940 [PathVisitor-1] DEBUG nextflow.file.PathVisitor - files for syntax: glob; folder: /Users/phil/Documents/GitHub/GATK/chr20_testdata/; pattern: human_g1k_v37_chr20.fasta.*; options: [:]
+Jun-11 12:48:50.968 [main] WARN  nextflow.processor.ProcessFactory - Process configuration syntax $processName has been deprecated -- Replace `process.$bwa_1_1 = <value>` with a process selector
+Jun-11 12:48:51.049 [main] DEBUG nextflow.processor.ProcessFactory - << taskConfig executor: null
+Jun-11 12:48:51.049 [main] DEBUG nextflow.processor.ProcessFactory - >> processorType: 'local'
+Jun-11 12:48:51.055 [main] DEBUG nextflow.executor.Executor - Initializing executor: local
+Jun-11 12:48:51.057 [main] INFO  nextflow.executor.Executor - [warm up] executor > local
+Jun-11 12:48:51.061 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=4; memory=8 GB; capacity=4; pollInterval=100ms; dumpInterval=5m
+Jun-11 12:48:51.066 [main] DEBUG nextflow.processor.TaskDispatcher - Starting monitor: LocalPollingMonitor
+Jun-11 12:48:51.067 [main] DEBUG n.processor.TaskPollingMonitor - >>> barrier register (monitor: local)
+Jun-11 12:48:51.071 [main] DEBUG nextflow.executor.Executor - Invoke register for executor: local
+Jun-11 12:48:51.110 [main] DEBUG nextflow.Session - >>> barrier register (process: bwa_1_1)
+Jun-11 12:48:51.116 [main] DEBUG nextflow.processor.TaskProcessor - Creating *combiner* operator for each param(s) at index(es): [1, 2]
+Jun-11 12:48:51.125 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > bwa_1_1 -- maxForks: 4
+Jun-11 12:48:51.144 [PathVisitor-1] DEBUG nextflow.file.PathVisitor - files for syntax: glob; folder: /Users/phil/Documents/GitHub/GATK/chr20_testdata/; pattern: human_g1k_v37_chr20.fasta.*; options: [:]
+Jun-11 12:48:51.186 [main] WARN  nextflow.processor.ProcessFactory - Process configuration syntax $processName has been deprecated -- Replace `process.$haplotypecaller_1_2 = <value>` with a process selector
+Jun-11 12:48:51.230 [main] DEBUG nextflow.processor.ProcessFactory - << taskConfig executor: null
+Jun-11 12:48:51.231 [main] DEBUG nextflow.processor.ProcessFactory - >> processorType: 'local'
+Jun-11 12:48:51.235 [main] DEBUG nextflow.executor.Executor - Initializing executor: local
+Jun-11 12:48:51.236 [main] DEBUG nextflow.Session - >>> barrier register (process: haplotypecaller_1_2)
+Jun-11 12:48:51.253 [main] DEBUG nextflow.processor.TaskProcessor - Creating *combiner* operator for each param(s) at index(es): [1, 2, 3]
+Jun-11 12:48:51.256 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > haplotypecaller_1_2 -- maxForks: 4
+Jun-11 12:48:51.282 [main] DEBUG nextflow.processor.ProcessFactory - << taskConfig executor: null
+Jun-11 12:48:51.282 [main] DEBUG nextflow.processor.ProcessFactory - >> processorType: 'local'
+Jun-11 12:48:51.282 [main] DEBUG nextflow.executor.Executor - Initializing executor: local
+Jun-11 12:48:51.283 [main] DEBUG nextflow.Session - >>> barrier register (process: status)
+Jun-11 12:48:51.283 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > status -- maxForks: 4
+Jun-11 12:48:51.302 [main] DEBUG nextflow.processor.ProcessFactory - << taskConfig executor: null
+Jun-11 12:48:51.303 [main] DEBUG nextflow.processor.ProcessFactory - >> processorType: 'local'
+Jun-11 12:48:51.303 [main] DEBUG nextflow.executor.Executor - Initializing executor: local
+Jun-11 12:48:51.304 [main] DEBUG nextflow.Session - >>> barrier register (process: compile_status_buffer)
+Jun-11 12:48:51.305 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > compile_status_buffer -- maxForks: 4
+Jun-11 12:48:51.313 [main] DEBUG nextflow.processor.ProcessFactory - << taskConfig executor: null
+Jun-11 12:48:51.313 [main] DEBUG nextflow.processor.ProcessFactory - >> processorType: 'local'
+Jun-11 12:48:51.313 [main] DEBUG nextflow.executor.Executor - Initializing executor: local
+Jun-11 12:48:51.315 [main] DEBUG nextflow.Session - >>> barrier register (process: compile_status)
+Jun-11 12:48:51.316 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > compile_status -- maxForks: 4
+Jun-11 12:48:51.325 [main] DEBUG nextflow.processor.ProcessFactory - << taskConfig executor: null
+Jun-11 12:48:51.325 [main] DEBUG nextflow.processor.ProcessFactory - >> processorType: 'local'
+Jun-11 12:48:51.325 [main] DEBUG nextflow.executor.Executor - Initializing executor: local
+Jun-11 12:48:51.326 [main] DEBUG nextflow.Session - >>> barrier register (process: report)
+Jun-11 12:48:51.327 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > report -- maxForks: 4
+Jun-11 12:48:51.334 [main] DEBUG nextflow.processor.ProcessFactory - << taskConfig executor: null
+Jun-11 12:48:51.334 [main] DEBUG nextflow.processor.ProcessFactory - >> processorType: 'local'
+Jun-11 12:48:51.334 [main] DEBUG nextflow.executor.Executor - Initializing executor: local
+Jun-11 12:48:51.335 [main] DEBUG nextflow.Session - >>> barrier register (process: compile_reports)
+Jun-11 12:48:51.338 [main] DEBUG nextflow.processor.TaskProcessor - Creating operator > compile_reports -- maxForks: 4
+Jun-11 12:48:51.342 [main] DEBUG nextflow.script.ScriptRunner - > Await termination 
+Jun-11 12:48:51.342 [main] DEBUG nextflow.Session - Session await
+Jun-11 12:48:51.368 [Actor Thread 3] INFO  nextflow.processor.TaskProcessor - [4c/b626f4] Cached process > bwa_1_1 (1)
+Jun-11 12:48:51.429 [Actor Thread 6] DEBUG nextflow.Session - <<< barrier arrive (process: bwa_1_1)
+Jun-11 12:48:51.494 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jun-11 12:48:51.500 [Task submitter] INFO  nextflow.Session - [6e/f5fe2b] Submitted process > status (H06HDADXX130110.1.ATCACGAT.20k_reads)
+Jun-11 12:48:51.519 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jun-11 12:48:51.519 [Task submitter] INFO  nextflow.Session - [92/dad399] Submitted process > report (H06HDADXX130110.1.ATCACGAT.20k_reads)
+Jun-11 12:48:53.702 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 2; name: status (H06HDADXX130110.1.ATCACGAT.20k_reads); status: COMPLETED; exit: 0; error: -; workDir: /Users/phil/Documents/GitHub/flowcraft-testing/work/6e/f5fe2bbe4bae3e4aff81b777091b2d]
+Jun-11 12:48:53.824 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 5; name: report (H06HDADXX130110.1.ATCACGAT.20k_reads); status: COMPLETED; exit: 0; error: -; workDir: /Users/phil/Documents/GitHub/flowcraft-testing/work/92/dad399635f5e898e56860f3844207d]
+Jun-11 12:48:53.833 [Task submitter] DEBUG nextflow.executor.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Jun-11 12:48:53.834 [Task submitter] INFO  nextflow.Session - [fa/11dc79] Submitted process > haplotypecaller_1_2 (2)
+Jun-11 12:53:24.816 [SIGINT handler] DEBUG nextflow.Session - Session aborted -- Cause: SIGINT
+Jun-11 12:53:24.884 [Task monitor] DEBUG n.processor.TaskPollingMonitor - <<< barrier arrives (monitor: local)
+Jun-11 12:53:25.099 [SIGINT handler] INFO  nextflow.Session - Adieu

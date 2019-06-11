@@ -1,0 +1,23 @@
+2019-06-11 11:06:33	-	reverent_brenner	-	9eba94462a6c03b4e5c91c61672dae61	efe5f5c1-f549-4b7b-a722-f413aa0dbf3f	nextflow run main.nf --help
+2019-06-11 11:11:33	-	tender_aryabhata	-	9eba94462a6c03b4e5c91c61672dae61	d094de5e-94c8-4d2b-aeea-c529a5f3aa37	nextflow run main.nf --help
+2019-06-11 11:11:47	2.2s	mad_bhabha	ERR	9eba94462a6c03b4e5c91c61672dae61	02a309b6-e3b5-4c65-a492-51621b5fb0ac	nextflow run main.nf --fastq 'testdata/H06HDADXX130110.1.ATCACGAT.20k_reads_{1,2}.fastq'
+2019-06-11 11:12:07	2m 24s	prickly_ramanujan	OK	9eba94462a6c03b4e5c91c61672dae61	9ff61190-70b0-4667-b3c3-9dea1141cd9e	nextflow run main.nf --fastq 'testdata/H06HDADXX130110.1.ATCACGAT.20k_reads_{1,2}.fastq' -profile docker
+2019-06-11 11:25:56	44.7s	adoring_church	OK	9eba94462a6c03b4e5c91c61672dae61	2b9e3e3e-94fb-4dcc-9d5e-d75abdbcfc9e	nextflow run main.nf --fastq 'testdata/H06HDADXX130110.1.ATCACGAT.20k_reads_{1,2}.fastq.gz' -profile docker
+2019-06-11 11:37:05	15m 36s	intergalactic_hawking	ERR	db8da0f75920d13a3f692c19fd2d0458	f5d486e2-0768-419d-ae8b-1db0e02a4706	nextflow run main.nf --fastq 'testdata/H06HDADXX130110.1.ATCACGAT.20k_reads_{1,2}.fastq.gz' -profile docker
+2019-06-11 11:56:46	-	condescending_pauling	-	db8da0f75920d13a3f692c19fd2d0458	8b688369-3fc8-43dc-99af-460c07802219	nextflow run main.nf --fastq 'testdata/H06HDADXX130110.1.ATCACGAT.20k_reads_{1,2}.fastq.gz' --bwaIndex /Users/phil/Documents/GitHub/GATK/chr20_testdata/human_g1k_v37_chr20.fasta -profile docker
+2019-06-11 11:57:02	-	kickass_waddington	-	db8da0f75920d13a3f692c19fd2d0458	8b688369-3fc8-43dc-99af-460c07802219	nextflow run main.nf --fastq 'testdata/H06HDADXX130110.1.ATCACGAT.20k_reads_{1,2}.fastq.gz' --bwaIndex /Users/phil/Documents/GitHub/GATK/chr20_testdata/human_g1k_v37_chr20.fasta -profile docker -resume
+2019-06-11 11:58:44	-	astonishing_saha	-	db8da0f75920d13a3f692c19fd2d0458	3ba0206b-f29b-4dc1-907f-0a4ed39b8981	nextflow run main.nf --help
+2019-06-11 11:59:50	1m 7s	drunk_ekeblad	OK	db8da0f75920d13a3f692c19fd2d0458	3ba0206b-f29b-4dc1-907f-0a4ed39b8981	nextflow run main.nf --fastq 'testdata/H06HDADXX130110.1.ATCACGAT.20k_reads_{1,2}.fastq.gz' --bwaIndex_1_3 /Users/phil/Documents/GitHub/GATK/chr20_testdata/human_g1k_v37_chr20.fasta -profile docker -resume
+2019-06-11 12:43:46	-	condescending_gutenberg	-	7fcae2d1dc240bea7fddd34ba1121e1e	0e7b28ff-ec4c-48c9-bf6a-e51fb167a5f9	nextflow run main.nf --help
+2019-06-11 12:46:27	-	cranky_franklin	-	7fcae2d1dc240bea7fddd34ba1121e1e	734636e7-be6d-4041-9841-333e20a251aa	nextflow run main.nf -profile docker
+2019-06-11 12:46:37	-	hungry_lorenz	-	7fcae2d1dc240bea7fddd34ba1121e1e	734636e7-be6d-4041-9841-333e20a251aa	nextflow run main.nf -profile docker -resume
+2019-06-11 12:47:58	21.1s	happy_snyder	ERR	16421566a97fdc2ad0a82d0362fd498d	734636e7-be6d-4041-9841-333e20a251aa	nextflow run haplotypecaller.nf -profile docker -resume
+2019-06-11 12:48:50	-	pedantic_einstein	-	0ec00b622c351cd425e84d0281a749c5	734636e7-be6d-4041-9841-333e20a251aa	nextflow run haplotypecaller.nf -profile docker -resume
+2019-06-11 12:53:47	3m 32s	stupefied_majorana	ERR	0ec00b622c351cd425e84d0281a749c5	734636e7-be6d-4041-9841-333e20a251aa	nextflow run haplotypecaller.nf -profile docker -resume
+2019-06-11 12:59:24	23.3s	condescending_crick	ERR	c4a93358138a5b4a9982e295df86bb8f	734636e7-be6d-4041-9841-333e20a251aa	nextflow run haplotypecaller.nf -profile docker -resume
+2019-06-11 13:02:18	15.5s	chaotic_hoover	ERR	c4a93358138a5b4a9982e295df86bb8f	734636e7-be6d-4041-9841-333e20a251aa	nextflow run haplotypecaller.nf -profile docker -resume
+2019-06-11 13:03:45	22.6s	shrivelled_mendel	ERR	2f5f5f94accabd7110701597de27d101	734636e7-be6d-4041-9841-333e20a251aa	nextflow run haplotypecaller.nf -profile docker -resume
+2019-06-11 13:07:36	15.1s	thirsty_goodall	ERR	2f5f5f94accabd7110701597de27d101	734636e7-be6d-4041-9841-333e20a251aa	nextflow run haplotypecaller.nf -profile docker -resume
+2019-06-11 13:11:45	15.5s	jovial_jones	ERR	2f5f5f94accabd7110701597de27d101	734636e7-be6d-4041-9841-333e20a251aa	nextflow run haplotypecaller.nf -profile docker -resume
+2019-06-11 13:17:33	43.6s	nice_goldberg	ERR	4038e76c9ca0b794cee8c972ec8325d4	734636e7-be6d-4041-9841-333e20a251aa	nextflow run haplotypecaller.nf -profile docker -resume
+2019-06-11 13:18:31	57.7s	hopeful_spence	OK	a08919d91c4f9c3534fb57ca3a171f46	734636e7-be6d-4041-9841-333e20a251aa	nextflow run haplotypecaller.nf -profile docker -resume
