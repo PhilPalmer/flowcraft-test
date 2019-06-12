@@ -58,8 +58,8 @@ IN_fastq_raw = Channel.fromFilePairs(params.fastq).ifEmpty { exit 1, "No fastq f
 IN_fastq_raw.set{ bwa_in_1_0 }
 
 
-bwaIndexId_1_1 = Channel.value(params.bwaIndex_1_1.split("/").last())
-bwaIndex_1_1 = Channel.fromPath("${params.bwaIndex_1_1}.*").collect().toList()
+bwaIndexId_1_1 = Channel.value(params.bwaIndex.split("/").last())
+bwaIndex_1_1 = Channel.fromPath("${params.bwaIndex}.*").collect().toList()
 
 process bwa_1_1 {
 
@@ -91,49 +91,200 @@ file ".versions"
 }
 
 
-haplotypecallerIndexId_1_2 = Channel.value(params.reference_1_2.split("/").last())
-haplotypecallerRef_1_2 = Channel.fromPath("${params.reference_1_2}.*").collect().toList()
-interval_1_2 = Channel.fromPath(params.intervals_1_2)
-           .ifEmpty { exit 1, "Interval list file for HaplotypeCaller not found: ${params.intervals}" }
-           .splitText()
-           .map { it -> it.trim() }
-
-process haplotypecaller_1_2 {
-
-    tag "$interval"
+process mark_duplicates_1_2 {
 
         if ( params.platformHTTP != null ) {
         beforeScript "PATH=${workflow.projectDir}/bin:\$PATH; export PATH; set_dotfiles.sh; startup_POST.sh $params.projectId $params.pipelineId 1_2 $params.platformHTTP"
-        afterScript "final_POST.sh $params.projectId $params.pipelineId 1_2 $params.platformHTTP; report_POST.sh $params.projectId $params.pipelineId 1_2 $params.sampleName $params.reportHTTP $params.currentUserName $params.currentUserId haplotypecaller_1_2 \"$params.platformSpecies\" true"
+        afterScript "final_POST.sh $params.projectId $params.pipelineId 1_2 $params.platformHTTP; report_POST.sh $params.projectId $params.pipelineId 1_2 $params.sampleName $params.reportHTTP $params.currentUserName $params.currentUserId mark_duplicates_1_2 \"$params.platformSpecies\" true"
     } else {
         beforeScript "PATH=${workflow.projectDir}/bin:\$PATH; set_dotfiles.sh"
         }
 
-    publishDir "results/variant_calling/haplotypecaller_1_2"
-
     input:
     set sample_id, file(bam), file(bai) from bwa_out_1_0
-    each interval from interval_1_2
-    each file(ref_files) from haplotypecallerRef_1_2
-    each index from haplotypecallerIndexId_1_2
    
     output:
-    file("${sample_id}.g.vcf") into haplotypecaller_gvcf
-    file("${sample_id}.g.vcf.idx") into index
+    set val(sample_id), file("${sample_id}_mark_dup.bam"), file("${sample_id}_mark_dup.bai") into mark_duplicates_out_1_1
+    set file("metrics.txt") into markDupMultiQC_1_2
+    set sample_id, val("1_2_mark_duplicates"), file(".status"), file(".warning"), file(".fail"), file(".command.log") into STATUS_mark_duplicates_1_2
+set sample_id, val("mark_duplicates_1_2"), val("1_2"), file(".report.json"), file(".versions"), file(".command.trace") into REPORT_mark_duplicates_1_2
+file ".versions"
 
-    set sample_id, val("1_2_haplotypecaller"), file(".status"), file(".warning"), file(".fail"), file(".command.log") into STATUS_haplotypecaller_1_2
-set sample_id, val("haplotypecaller_1_2"), val("1_2"), file(".report.json"), file(".versions"), file(".command.trace") into REPORT_haplotypecaller_1_2
+    """
+    gatk MarkDuplicates \
+      -I $bam \
+      -M metrics.txt \
+      -O ${sample_id}_mark_dup.bam \
+      --CREATE_INDEX
+    """
+}
+
+
+baseRecalibratorFasta_1_3 = Channel.value(params.reference.split("/").last())
+baseRecalibratorRef_1_3 = Channel.fromPath("${params.reference}.*").collect().toList()
+baseRecalibratorDbsnp_1_3 = Channel.fromPath("${params.dbsnp}")
+baseRecalibratorDbsnpIdx_1_3 = Channel.fromPath("${params.dbsnpIdx}")
+baseRecalibratorGoldenIndel_1_3 = Channel.fromPath("${params.goldenIndel}")
+baseRecalibratorGoldenIndelIdx_1_3 = Channel.fromPath("${params.goldenIndelIdx}")
+
+process base_recalibrator_1_3 {
+
+        if ( params.platformHTTP != null ) {
+        beforeScript "PATH=${workflow.projectDir}/bin:\$PATH; export PATH; set_dotfiles.sh; startup_POST.sh $params.projectId $params.pipelineId 1_3 $params.platformHTTP"
+        afterScript "final_POST.sh $params.projectId $params.pipelineId 1_3 $params.platformHTTP; report_POST.sh $params.projectId $params.pipelineId 1_3 $params.sampleName $params.reportHTTP $params.currentUserName $params.currentUserId base_recalibrator_1_3 \"$params.platformSpecies\" true"
+    } else {
+        beforeScript "PATH=${workflow.projectDir}/bin:\$PATH; set_dotfiles.sh"
+        }
+
+    tag { sample_id }
+
+    input:
+    set val(sample_id), file(bam), file(bai) from mark_duplicates_out_1_1
+    each file(reference) from baseRecalibratorRef_1_3
+    val(fasta) from baseRecalibratorFasta_1_3
+    each file(dbsnp) from baseRecalibratorDbsnp_1_3
+    each file(dbsnp_idx) from baseRecalibratorDbsnpIdx_1_3
+    each file(golden_indel) from baseRecalibratorGoldenIndel_1_3
+    each file(golden_indel_idx) from baseRecalibratorGoldenIndelIdx_1_3
+    
+    output:
+    set sample_id, file("${sample_id}_recal_data.table"), file(bam), file(bai) into baserecalibrator_table
+    set sample_id, val("1_3_base_recalibrator"), file(".status"), file(".warning"), file(".fail"), file(".command.log") into STATUS_base_recalibrator_1_3
+set sample_id, val("base_recalibrator_1_3"), val("1_3"), file(".report.json"), file(".versions"), file(".command.trace") into REPORT_base_recalibrator_1_3
+file ".versions"
+
+    """
+    # gunzip dbsnp & golden_indel if gzipped
+    [[ "\$(file --mime-type $dbsnp | cut -d' ' -f2)" == "application/x-gzip" ]] && gzip -d --force $dbsnp
+    dbsnp=\$(basename $dbsnp .gz)
+    [[ "\$(file --mime-type $dbsnp_idx | cut -d' ' -f2)" == "application/x-gzip" ]] && gzip -d --force $dbsnp_idx
+    [[ "\$(file --mime-type $golden_indel | cut -d' ' -f2)" == "application/x-gzip" ]] && gzip -d --force $golden_indel
+    golden_indel=\$(basename $golden_indel .gz)
+    [[ "\$(file --mime-type $golden_indel_idx | cut -d' ' -f2)" == "application/x-gzip" ]] && gzip -d --force $golden_indel_idx
+
+    gatk BaseRecalibrator \
+      -I $bam \
+      --known-sites \$dbsnp \
+      --known-sites \$golden_indel \
+      -O ${sample_id}_recal_data.table \
+      -R ${fasta}.fasta
+    """
+}
+
+
+process apply_bqsr_1_3 {
+
+        if ( params.platformHTTP != null ) {
+        beforeScript "PATH=${workflow.projectDir}/bin:\$PATH; export PATH; set_dotfiles.sh; startup_POST.sh $params.projectId $params.pipelineId 1_3 $params.platformHTTP"
+        afterScript "final_POST.sh $params.projectId $params.pipelineId 1_3 $params.platformHTTP; report_POST.sh $params.projectId $params.pipelineId 1_3 $params.sampleName $params.reportHTTP $params.currentUserName $params.currentUserId base_recalibrator_1_3 \"$params.platformSpecies\" true"
+    } else {
+        beforeScript "PATH=${workflow.projectDir}/bin:\$PATH; set_dotfiles.sh"
+        }
+
+    publishDir "results/mapping/apply_bqsr_1_3"
+
+    tag { sample_id }
+
+    input:
+    set sample_id, file(baserecalibrator_table), file(bam), file(bai) from baserecalibrator_table
+    
+    output:
+    set sample_id, file("${sample_id}_recalibrated.bam"), file("${sample_id}_recalibrated.bai") into base_recalibrator_out_1_2
+    set sample_id, val("1_3_apply_bqsr"), file(".status"), file(".warning"), file(".fail"), file(".command.log") into STATUS_apply_bqsr_1_3
+set sample_id, val("apply_bqsr_1_3"), val("1_3"), file(".report.json"), file(".versions"), file(".command.trace") into REPORT_apply_bqsr_1_3
+file ".versions"
+
+    """
+    gatk ApplyBQSR \
+      -I $bam \
+      -bqsr $baserecalibrator_table \
+      -O ${sample_id}_recalibrated.bam \
+      --create-output-bam-index
+    """
+}
+
+
+haplotypecallerIndexId_1_4 = Channel.value(params.reference.split("/").last())
+haplotypecallerRef_1_4 = Channel.fromPath("${params.reference}.*").collect().toList()
+interval_1_4 = Channel.fromPath(params.intervals)
+           .ifEmpty { exit 1, "Interval list file for HaplotypeCaller not found: ${params.intervals}" }
+           .splitText()
+           .map { it -> it.trim() }
+
+process haplotypecaller_1_4 {
+
+        if ( params.platformHTTP != null ) {
+        beforeScript "PATH=${workflow.projectDir}/bin:\$PATH; export PATH; set_dotfiles.sh; startup_POST.sh $params.projectId $params.pipelineId 1_4 $params.platformHTTP"
+        afterScript "final_POST.sh $params.projectId $params.pipelineId 1_4 $params.platformHTTP; report_POST.sh $params.projectId $params.pipelineId 1_4 $params.sampleName $params.reportHTTP $params.currentUserName $params.currentUserId haplotypecaller_1_4 \"$params.platformSpecies\" true"
+    } else {
+        beforeScript "PATH=${workflow.projectDir}/bin:\$PATH; set_dotfiles.sh"
+        }
+
+    publishDir "results/variant_calling/haplotypecaller_1_4"
+
+    tag "$interval"
+
+    input:
+    set sample_id, file(bam), file(bai) from base_recalibrator_out_1_2
+    each interval from interval_1_4
+    each file(ref_files) from haplotypecallerRef_1_4
+    each index from haplotypecallerIndexId_1_4
+   
+    output:
+    file("*.vcf") into haplotypecallerGvcf
+    file("*.vcf.idx") into gvcfIndex
+    val(sample_id) into sampleId
+
+    set sample_id, val("1_4_haplotypecaller_${interval}"), file(".status"), file(".warning"), file(".fail"), file(".command.log") into STATUS_haplotypecaller_1_4
+set sample_id, val("haplotypecaller_1_4_${interval}"), val("1_4"), file(".report.json"), file(".versions"), file(".command.trace") into REPORT_haplotypecaller_1_4
 file ".versions"
 
     """
     gatk HaplotypeCaller \
       --java-options -Xmx${task.memory.toMega()}M \
       -R ${index}.fasta \
-      -O ${sample_id}.g.vcf \
+      -O ${sample_id}.vcf \
       -I $bam \
-      -ERC GVCF \
       -L $interval
     """
+}
+
+process merge_vcfs_1_4 {
+
+        if ( params.platformHTTP != null ) {
+        beforeScript "PATH=${workflow.projectDir}/bin:\$PATH; export PATH; set_dotfiles.sh; startup_POST.sh $params.projectId $params.pipelineId 1_4 $params.platformHTTP"
+        afterScript "final_POST.sh $params.projectId $params.pipelineId 1_4 $params.platformHTTP; report_POST.sh $params.projectId $params.pipelineId 1_4 $params.sampleName $params.reportHTTP $params.currentUserName $params.currentUserId haplotypecaller_1_4 \"$params.platformSpecies\" true"
+    } else {
+        beforeScript "PATH=${workflow.projectDir}/bin:\$PATH; set_dotfiles.sh"
+        }
+
+    publishDir "results/variant_calling/merge_vcfs_1_4"
+
+    tag { sample_id }
+
+    input:
+    file('*.vcf') from haplotypecallerGvcf.collect()
+    file('*.vcf.idx') from gvcfIndex.collect()
+    val(sample_id) from sampleId.first()
+
+    output:
+    set file("${sample_id}.vcf.gz"), file("${sample_id}.vcf.gz.tbi") into haplotypecaller_out_1_3
+    set sample_id, val("1_4_merge_vcfs"), file(".status"), file(".warning"), file(".fail"), file(".command.log") into STATUS_merge_vcfs_1_4
+set sample_id, val("merge_vcfs_1_4"), val("1_4"), file(".report.json"), file(".versions"), file(".command.trace") into REPORT_merge_vcfs_1_4
+file ".versions"
+
+    script:
+    """
+    ## make list of input variant files
+    for vcf in \$(ls *vcf); do
+      echo \$vcf >> input_variant_files.list
+    done
+
+    gatk MergeVcfs \
+      --INPUT= input_variant_files.list \
+      --OUTPUT= ${sample_id}.vcf.gz
+    """
+
 }
 
 
@@ -147,7 +298,7 @@ process status {
     publishDir "pipeline_status/$task_name"
 
     input:
-    set sample_id, task_name, status, warning, fail, file(log) from STATUS_bwa_1_1.mix(STATUS_haplotypecaller_1_2)
+    set sample_id, task_name, status, warning, fail, file(log) from STATUS_bwa_1_1.mix(STATUS_mark_duplicates_1_2,STATUS_base_recalibrator_1_3,STATUS_apply_bqsr_1_3,STATUS_haplotypecaller_1_4,STATUS_merge_vcfs_1_4)
 
     output:
     file '*.status' into master_status
@@ -216,7 +367,7 @@ process report {
             pid,
             report_json,
             version_json,
-            trace from REPORT_bwa_1_1.mix(REPORT_haplotypecaller_1_2)
+            trace from REPORT_bwa_1_1.mix(REPORT_mark_duplicates_1_2,REPORT_base_recalibrator_1_3,REPORT_apply_bqsr_1_3,REPORT_haplotypecaller_1_4,REPORT_merge_vcfs_1_4)
 
     output:
     file "*" optional true into master_report
