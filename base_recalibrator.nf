@@ -140,7 +140,7 @@ process base_recalibrator_1_3 {
 
     input:
     set sample_id, file(bam), file(bai) from mark_duplicates_out_1_1
-    each file(fasta) from baseRecalibratorRef_1_3
+    each file(reference) from baseRecalibratorRef_1_3
     val(fasta) from baseRecalibratorIndexId_1_3
     each file(dbsnp) from baseRecalibratorDbsnp_1_3
     each file(dbsnp_idx) from baseRecalibratorDbsnpIdx_1_3
