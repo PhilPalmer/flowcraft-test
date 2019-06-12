@@ -144,7 +144,7 @@ process base_recalibrator_1_3 {
     each file(dbsnp) from baseRecalibratorDbsnp_1_3
     each file(dbsnp_idx) from baseRecalibratorDbsnpIdx_1_3
     each file(golden_indel) from baseRecalibratorGoldenIndel_1_3
-    each file(golden_indel_idx) from baseRecalibratorGoldenIndel_Idx_1_3
+    each file(golden_indel_idx) from baseRecalibratorGoldenIndelIdx_1_3
     
     output:
     set sample_id, file("${name}_recal_data.table") into baserecalibrator_table
@@ -181,7 +181,7 @@ process status {
     publishDir "pipeline_status/$task_name"
 
     input:
-    set sample_id, task_name, status, warning, fail, file(log) from STATUS_bwa_1_1.mix(STATUS_mark_duplicates_1_2,STATUS_base_recalibrator__1_3)
+    set sample_id, task_name, status, warning, fail, file(log) from STATUS_bwa_1_1.mix(STATUS_mark_duplicates_1_2,STATUS_base_recalibrator_1_3)
 
     output:
     file '*.status' into master_status
@@ -250,7 +250,7 @@ process report {
             pid,
             report_json,
             version_json,
-            trace from REPORT_bwa_1_1.mix(REPORT_mark_duplicates_1_2,REPORT_base_recalibrator__1_3)
+            trace from REPORT_bwa_1_1.mix(REPORT_mark_duplicates_1_2,REPORT_base_recalibrator_1_3)
 
     output:
     file "*" optional true into master_report
