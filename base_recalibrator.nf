@@ -104,7 +104,7 @@ process mark_duplicates_1_2 {
     set sample_id, file(bam), file(bai) from bwa_out_1_0
    
     output:
-    set sample_id, file("${sample_id}_mark_dup.bam"), file("${sample_id}_mark_dup.bai") into mark_duplicates_out_1_1
+    set val(sample_id), file("${sample_id}_mark_dup.bam"), file("${sample_id}_mark_dup.bai") into mark_duplicates_out_1_1
     set file("metrics.txt") into markDupMultiQC_1_2
     set sample_id, val("1_2_mark_duplicates"), file(".status"), file(".warning"), file(".fail"), file(".command.log") into STATUS_mark_duplicates_1_2
 set sample_id, val("mark_duplicates_1_2"), val("1_2"), file(".report.json"), file(".versions"), file(".command.trace") into REPORT_mark_duplicates_1_2
@@ -140,7 +140,7 @@ process base_recalibrator_1_3 {
     publishDir "results/mapping/base_recalibrator_1_3"
 
     input:
-    set sample_id, file(bam), file(bai) from mark_duplicates_out_1_1
+    set val(sample_id), file(bam), file(bai) from mark_duplicates_out_1_1
     each file(reference) from baseRecalibratorRef_1_3
     val(fasta) from baseRecalibratorFasta_1_3
     each file(dbsnp) from baseRecalibratorDbsnp_1_3
