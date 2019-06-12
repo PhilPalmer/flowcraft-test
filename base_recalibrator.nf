@@ -200,7 +200,8 @@ file ".versions"
     gatk ApplyBQSR \
       -I $bam \
       -bqsr $baserecalibrator_table \
-      -O ${sample_id}_bqsr.bam
+      -O ${sample_id}_recalibrated.bam \
+      --CREATE_INDEX
     """
 }
 
