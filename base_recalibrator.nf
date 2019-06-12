@@ -168,7 +168,7 @@ file ".versions"
       --known-sites \$dbsnp \
       --known-sites \$golden_indel \
       -O ${sample_id}_recal_data.table \
-      -R $fasta
+      -R ${fasta}.fasta
     """
 }
 
