@@ -120,8 +120,8 @@ file ".versions"
 }
 
 
-baseRecalibratorFasta_1_3 = Channel.value(params.referenceFasta.split("/").last())
-baseRecalibratorRef_1_3 = Channel.fromPath("${params.referenceName}.*").collect().toList()
+baseRecalibratorFasta_1_3 = Channel.value(params.reference.split("/").last())
+baseRecalibratorRef_1_3 = Channel.fromPath("${params.reference}.*").collect().toList()
 baseRecalibratorDbsnp_1_3 = Channel.fromPath("${params.dbsnp}")
 baseRecalibratorDbsnpIdx_1_3 = Channel.fromPath("${params.dbsnpIdx}")
 baseRecalibratorGoldenIndel_1_3 = Channel.fromPath("${params.goldenIndel}")
@@ -167,7 +167,7 @@ file ".versions"
       --known-sites \$dbsnp \
       --known-sites \$golden_indel \
       -O ${sample_id}_recal_data.table \
-      -R ${fasta}
+      -R ${fasta}.fasta
     """
 }
 
