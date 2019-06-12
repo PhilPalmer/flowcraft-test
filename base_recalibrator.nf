@@ -120,7 +120,6 @@ file ".versions"
 }
 
 
-baseRecalibratorIndexId_1_3 = Channel.value(params.reference.split("/").last())
 baseRecalibratorRef_1_3 = Channel.fromPath("${params.reference}.*").collect().toList()
 baseRecalibratorDbsnp_1_3 = Channel.fromPath("${params.dbsnp}")
 baseRecalibratorDbsnpIdx_1_3 = Channel.fromPath("${params.dbsnpIdx}")
@@ -140,8 +139,7 @@ process base_recalibrator_1_3 {
 
     input:
     set sample_id, file(bam), file(bai) from mark_duplicates_out_1_1
-    each file(ref_files) from baseRecalibratorRef_1_3
-    val(fasta) from baseRecalibratorIndexId_1_3
+    each file(fasta) from baseRecalibratorRef_1_3
     each file(dbsnp) from baseRecalibratorDbsnp_1_3
     each file(dbsnp_idx) from baseRecalibratorDbsnpIdx_1_3
     each file(golden_indel) from baseRecalibratorGoldenIndel_1_3
