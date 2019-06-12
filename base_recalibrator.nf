@@ -58,8 +58,8 @@ IN_fastq_raw = Channel.fromFilePairs(params.fastq).ifEmpty { exit 1, "No fastq f
 IN_fastq_raw.set{ bwa_in_1_0 }
 
 
-bwaIndexId_1_1 = Channel.value(params.bwaIndex.split("/").last())
-bwaIndex_1_1 = Channel.fromPath("${params.bwaIndex}.*").collect().toList()
+bwaIndexId_1_1 = Channel.value(params.referenceFasta.split("/").last())
+bwaIndex_1_1 = Channel.fromPath("${params.referenceName}.*").collect().toList()
 
 process bwa_1_1 {
 
@@ -120,8 +120,8 @@ file ".versions"
 }
 
 
-baseRecalibratorIndexId_1_3 = Channel.value(params.reference)
-baseRecalibratorRef_1_3 = Channel.fromPath("${params.reference}.*").collect().toList()
+baseRecalibratorIndexId_1_3 = Channel.value(params.referenceFasta)
+baseRecalibratorRef_1_3 = Channel.fromPath("${params.referenceName}.*").collect().toList()
 baseRecalibratorDbsnp_1_3 = Channel.fromPath("${params.dbsnp}")
 baseRecalibratorDbsnpIdx_1_3 = Channel.fromPath("${params.dbsnpIdx}")
 baseRecalibratorGoldenIndel_1_3 = Channel.fromPath("${params.goldenIndel}")
