@@ -215,7 +215,7 @@ process status {
     publishDir "pipeline_status/$task_name"
 
     input:
-    set sample_id, task_name, status, warning, fail, file(log) from STATUS_bwa_1_1.mix(STATUS_mark_duplicates_1_2,STATUS_base_recalibrator_1_3)
+    set sample_id, task_name, status, warning, fail, file(log) from STATUS_bwa_1_1.mix(STATUS_mark_duplicates_1_2,STATUS_base_recalibrator_1_3,STATUS_apply_bqsr_1_3)
 
     output:
     file '*.status' into master_status
@@ -284,7 +284,7 @@ process report {
             pid,
             report_json,
             version_json,
-            trace from REPORT_bwa_1_1.mix(REPORT_mark_duplicates_1_2,REPORT_base_recalibrator_1_3)
+            trace from REPORT_bwa_1_1.mix(REPORT_mark_duplicates_1_2,REPORT_base_recalibrator_1_3,REPORT_apply_bqsr_1_3)
 
     output:
     file "*" optional true into master_report
