@@ -201,7 +201,7 @@ file ".versions"
       -I $bam \
       -bqsr $baserecalibrator_table \
       -O ${sample_id}_recalibrated.bam \
-      --CREATE_INDEX
+      --create-output-bam-index
     """
 }
 
