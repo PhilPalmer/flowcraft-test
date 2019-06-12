@@ -120,7 +120,6 @@ file ".versions"
 }
 
 
-baseRecalibratorIndexId_1_3 = Channel.value(params.referenceFasta)
 baseRecalibratorRef_1_3 = Channel.fromPath("${params.referenceName}.*").collect().toList()
 baseRecalibratorDbsnp_1_3 = Channel.fromPath("${params.dbsnp}")
 baseRecalibratorDbsnpIdx_1_3 = Channel.fromPath("${params.dbsnpIdx}")
@@ -140,8 +139,7 @@ process base_recalibrator_1_3 {
 
     input:
     set sample_id, file(bam), file(bai) from mark_duplicates_out_1_1
-    each file(reference) from baseRecalibratorRef_1_3
-    val(fasta) from baseRecalibratorIndexId_1_3
+    each file(fasta) from baseRecalibratorRef_1_3
     each file(dbsnp) from baseRecalibratorDbsnp_1_3
     each file(dbsnp_idx) from baseRecalibratorDbsnpIdx_1_3
     each file(golden_indel) from baseRecalibratorGoldenIndel_1_3
@@ -167,7 +165,7 @@ file ".versions"
       --known-sites \$dbsnp \
       --known-sites \$golden_indel \
       -O ${sample_id}_recal_data.table \
-      -R $fasta
+      -R ${fasta}.fasta
     """
 }
 
