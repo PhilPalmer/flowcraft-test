@@ -155,12 +155,12 @@ file ".versions"
 
     """
     # gunzip dbsnp & golden_indel if gzipped
-    [[ "\$(file --mime-type $dbsnp)"=="application/x-gzip" ]] && gzip -d --force $dbsnp
+    [[ "\$(file --mime-type $dbsnp | cut -d' ' -f2)" == "application/x-gzip" ]] && gzip -d --force $dbsnp
     dbsnp=\$(basename $dbsnp .gz)
-    [[ "\$(file --mime-type $dbsnp_idx)"=="application/x-gzip" ]] && gzip -d --force $dbsnp_idx
-    [[ "\$(file --mime-type $golden_indel)"=="application/x-gzip" ]] && gzip -d --force $golden_indel
+    [[ "\$(file --mime-type $dbsnp_idx | cut -d' ' -f2)" == "application/x-gzip" ]] && gzip -d --force $dbsnp_idx
+    [[ "\$(file --mime-type $golden_indel | cut -d' ' -f2)" == "application/x-gzip" ]] && gzip -d --force $golden_indel
     golden_indel=\$(basename $golden_indel .gz)
-    [[ "\$(file --mime-type $golden_indel_idx)"=="application/x-gzip" ]] && gzip -d --force $golden_indel_idx
+    [[ "\$(file --mime-type $golden_indel_idx | cut -d' ' -f2)" == "application/x-gzip" ]] && gzip -d --force $golden_indel_idx
 
     gatk BaseRecalibrator \
       -I $bam \
