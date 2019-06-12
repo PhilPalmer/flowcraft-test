@@ -138,6 +138,8 @@ process base_recalibrator_1_3 {
 
     publishDir "results/mapping/base_recalibrator_1_3"
 
+    tag { sample_id }
+
     input:
     set val(sample_id), file(bam), file(bai) from mark_duplicates_out_1_1
     each file(reference) from baseRecalibratorRef_1_3
@@ -148,7 +150,7 @@ process base_recalibrator_1_3 {
     each file(golden_indel_idx) from baseRecalibratorGoldenIndelIdx_1_3
     
     output:
-    set sample_id, file("${sample_id}_recal_data.table") into baserecalibrator_table
+    set sample_id, file("${sample_id}_recal_data.table"), file(bam), file(bai) into baserecalibrator_table
     set sample_id, val("1_3_base_recalibrator"), file(".status"), file(".warning"), file(".fail"), file(".command.log") into STATUS_base_recalibrator_1_3
 set sample_id, val("base_recalibrator_1_3"), val("1_3"), file(".report.json"), file(".versions"), file(".command.trace") into REPORT_base_recalibrator_1_3
 file ".versions"
@@ -168,6 +170,37 @@ file ".versions"
       --known-sites \$golden_indel \
       -O ${sample_id}_recal_data.table \
       -R ${fasta}.fasta
+    """
+}
+
+
+process apply_bqsr_1_3 {
+
+        if ( params.platformHTTP != null ) {
+        beforeScript "PATH=${workflow.projectDir}/bin:\$PATH; export PATH; set_dotfiles.sh; startup_POST.sh $params.projectId $params.pipelineId 1_3 $params.platformHTTP"
+        afterScript "final_POST.sh $params.projectId $params.pipelineId 1_3 $params.platformHTTP; report_POST.sh $params.projectId $params.pipelineId 1_3 $params.sampleName $params.reportHTTP $params.currentUserName $params.currentUserId base_recalibrator_1_3 \"$params.platformSpecies\" true"
+    } else {
+        beforeScript "PATH=${workflow.projectDir}/bin:\$PATH; set_dotfiles.sh"
+        }
+
+    publishDir "results/mapping/apply_bqsr_1_3"
+
+    tag { sample_id }
+
+    input:
+    set sample_id, file(baserecalibrator_table), file(bam), file(bai) from baserecalibrator_table
+    
+    output:
+    set sample_id, file("${sample_id}_recalibrated.bam"), file("${sample_id}_recalibrated.bai") into base_recalibrator_out_1_2
+    set sample_id, val("1_3_apply_bqsr"), file(".status"), file(".warning"), file(".fail"), file(".command.log") into STATUS_apply_bqsr_1_3
+set sample_id, val("apply_bqsr_1_3"), val("1_3"), file(".report.json"), file(".versions"), file(".command.trace") into REPORT_apply_bqsr_1_3
+file ".versions"
+
+    """
+    gatk ApplyBQSR \
+      -I $bam \
+      -bqsr $baserecalibrator_table \
+      -O ${sample_id}_bqsr.bam
     """
 }
 
