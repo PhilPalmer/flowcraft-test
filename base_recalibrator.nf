@@ -148,8 +148,8 @@ process base_recalibrator_1_3 {
     
     output:
     set sample_id, file("${name}_recal_data.table") into baserecalibrator_table
-    set sample_id, val("1_3_mark_duplicates"), file(".status"), file(".warning"), file(".fail"), file(".command.log") into STATUS_mark_duplicates_1_3
-set sample_id, val("mark_duplicates_1_3"), val("1_3"), file(".report.json"), file(".versions"), file(".command.trace") into REPORT_mark_duplicates_1_3
+    set sample_id, val("1_3_base_recalibrator"), file(".status"), file(".warning"), file(".fail"), file(".command.log") into STATUS_base_recalibrator_1_3
+set sample_id, val("base_recalibrator_1_3"), val("1_3"), file(".report.json"), file(".versions"), file(".command.trace") into REPORT_base_recalibrator_1_3
 file ".versions"
 
     """
