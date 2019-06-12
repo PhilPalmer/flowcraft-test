@@ -58,8 +58,8 @@ IN_fastq_raw = Channel.fromFilePairs(params.fastq).ifEmpty { exit 1, "No fastq f
 IN_fastq_raw.set{ bwa_in_1_0 }
 
 
-bwaIndexId_1_1 = Channel.value(params.referenceFasta.split("/").last())
-bwaIndex_1_1 = Channel.fromPath("${params.referenceName}.*").collect().toList()
+bwaIndexId_1_1 = Channel.value(params.bwaIndex.split("/").last())
+bwaIndex_1_1 = Channel.fromPath("${params.bwaIndex}.*").collect().toList()
 
 process bwa_1_1 {
 
