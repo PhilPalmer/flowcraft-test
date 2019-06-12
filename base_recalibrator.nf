@@ -120,8 +120,7 @@ file ".versions"
 }
 
 
-bwaIndexId_1_3 = Channel.value(params.referenceFasta.split("/").last())
-baseRecalibratorFasta_1_3 = Channel.fromPath(params.referenceFasta).map { file -> file.baseName }
+baseRecalibratorFasta_1_3 = Channel.value(params.referenceFasta.split("/").last())
 baseRecalibratorRef_1_3 = Channel.fromPath("${params.referenceName}.*").collect().toList()
 baseRecalibratorDbsnp_1_3 = Channel.fromPath("${params.dbsnp}")
 baseRecalibratorDbsnpIdx_1_3 = Channel.fromPath("${params.dbsnpIdx}")
